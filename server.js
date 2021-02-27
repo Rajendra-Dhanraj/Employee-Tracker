@@ -78,10 +78,10 @@ viewAllEmp = () => {
 
 viewDeps = () => {
   connection.query(
-    "SELECT id AS department_id, department_name AS Departments FROM department",
+    "SELECT id AS department_id, department_name AS department_name FROM department",
     function (err, res) {
       if (err) throw err;
-      console.table("\n", res);
+      console.table("\n", res, "\n");
     }
   );
   start();
@@ -89,11 +89,13 @@ viewDeps = () => {
 
 viewRoles = () => {
   connection.query(
-    "SELECT title AS Role, salary FROM roles",
+    "SELECT title as role_title, salary, department_name, role_id FROM roles INNER JOIN department ON roles.department_id = department.id INNER JOIN employee ON roles.id = employee.role_id;",
     function (err, res) {
       if (err) throw err;
-      console.table("\n", res);
+      console.table("\n", res, "\n");
     }
   );
   start();
 };
+
+

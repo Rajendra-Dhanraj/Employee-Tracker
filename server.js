@@ -52,10 +52,10 @@ function start() {
           addRole();
           break;
         case "Add an Employee":
-          // function call
+          addEmp();
           break;
         case "Update Employee Role":
-          // function call
+          updateEmp();
           break;
         case "Exit":
           console.log("Bye!");
@@ -89,7 +89,8 @@ viewDeps = () => {
 
 viewRoles = () => {
   connection.query(
-    "SELECT title as role_title, salary, department_name, role_id FROM roles INNER JOIN department ON roles.department_id = department.id INNER JOIN employee ON roles.id = employee.role_id;",
+    "SELECT title as role_title, salary, department_name, role_id FROM roles LEFT JOIN department ON roles.department_id = department.id LEFT JOIN employee ON roles.id = employee.role_id;",
+
     function (err, res) {
       if (err) throw err;
       console.table("\n", res, "\n");
@@ -140,15 +141,75 @@ function addRole() {
     ])
     .then((answers) => {
       console.log(answers);
-      // connection.query(
-      //   `INSERT INTO roles (title, salary) VALUES ('${
-      //     (answers.name, answers.salary)
-      //   }');`,
-      //   function (error) {
-      //     if (error) throw error;
-      //     console.log("Role Added!");
-      //     // viewRoles();
-      //   }
-      // );
+      connection.query(
+        `INSERT INTO roles (title, salary, department_id) VALUES 
+        ('${answers.name}', '${answers.salary}', '${answers.id}');`,
+        function (error) {
+          if (error) throw error;
+          console.log("Role Added!");
+          viewRoles();
+        }
+      );
     });
+}
+
+function addEmp() {
+  inquirer
+    .prompt([
+      {
+        name: "empFirst",
+        type: "input",
+        message: 'What is the employee"s first name?',
+      },
+      {
+        name: "empLast",
+        type: "input",
+        message: 'What is the employee"s last name?',
+      },
+      {
+        name: "roleId",
+        type: "input",
+        message: 'What is the employee"s role id?',
+      },
+      {
+        name: "managerId",
+        type: "input",
+        message: "what is the employee's manager id?",
+      },
+    ])
+    .then(function (answers) {
+      console.log(answers);
+      connection.query(
+        `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES             
+        ('${answers.empFirst}', '${answers.empLast}', '${answers.roleId}', '${answers.managerId}');`,
+        function (error) {
+          if (error) throw error;
+          console.log("Employee Added!");
+          viewAllEmp();
+        }
+      );
+    });
+}
+
+function updateEmp() {
+  connection.query(
+    "SELECT CONCAT(first_name, ' ', last_name) AS employee FROM employee;",
+    function (error, res) {
+      if (error) throw error;
+      const allEmp = res.map(({ employee }) => ({
+        name: employee,
+      }));
+
+      inquirer
+        .prompt({
+          name: "empName",
+          type: "list",
+          message: "Which employee would you like to update?",
+          choices: allEmp,
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    }
+  );
 }

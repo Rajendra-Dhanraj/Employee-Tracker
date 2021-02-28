@@ -22,9 +22,3 @@ CREATE TABLE employee(
     manager_id INTEGER NULL
 );
 
--- SELECT title, salary, department_name, role_id
--- FROM roles 
--- INNER JOIN department
--- ON roles.department_id = department.id
--- INNER JOIN employee
--- ON roles.id = employee.role_id;

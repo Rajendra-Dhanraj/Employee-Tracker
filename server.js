@@ -46,10 +46,10 @@ function start() {
           viewAllEmp();
           break;
         case "Add a Department":
-          //function call
+          addDep();
           break;
         case "Add a Role":
-          //function call
+          addRole();
           break;
         case "Add an Employee":
           // function call
@@ -98,4 +98,57 @@ viewRoles = () => {
   start();
 };
 
+function addDep() {
+  inquirer
+    .prompt({
+      name: "department",
+      type: "input",
+      message: "Enter new Department Name",
+    })
+    .then(function (answers) {
+      console.log(answers.department);
+      connection.query(
+        `INSERT INTO department (department_name) VALUE ('${answers.department}');`,
 
+        function (error) {
+          if (error) throw error;
+          console.log("Department Added!");
+          viewDeps();
+        }
+      );
+    });
+}
+
+function addRole() {
+  inquirer
+    .prompt([
+      {
+        name: "name",
+        type: "input",
+        message: "Enter name of new role",
+      },
+      {
+        name: "salary",
+        type: "input",
+        message: "What is the salary of the new role?",
+      },
+      {
+        name: "id",
+        type: "input",
+        message: "what is the department ID of the new role?",
+      },
+    ])
+    .then((answers) => {
+      console.log(answers);
+      // connection.query(
+      //   `INSERT INTO roles (title, salary) VALUES ('${
+      //     (answers.name, answers.salary)
+      //   }');`,
+      //   function (error) {
+      //     if (error) throw error;
+      //     console.log("Role Added!");
+      //     // viewRoles();
+      //   }
+      // );
+    });
+}

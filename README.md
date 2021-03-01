@@ -32,7 +32,7 @@ Employee Table:
 
 ### Demonstration
 
-[Click to view a video walkthrough of the application](enter link here)
+[Click to view a video walkthrough of the application](https://drive.google.com/file/d/1kAIQ9gC0rnDbjL9Veo-sbVRhPa-9FeTu/view)
 
 ### Questions
 

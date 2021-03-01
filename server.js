@@ -30,7 +30,6 @@ function start() {
         "Add a Department",
         "Add a Role",
         "Add an Employee",
-        "Update Employee Role",
         "Exit",
       ],
     })
@@ -53,9 +52,6 @@ function start() {
           break;
         case "Add an Employee":
           addEmp();
-          break;
-        case "Update Employee Role":
-          updateEmp();
           break;
         case "Exit":
           console.log("Bye!");
@@ -191,25 +187,26 @@ function addEmp() {
     });
 }
 
-function updateEmp() {
-  connection.query(
-    "SELECT CONCAT(first_name, ' ', last_name) AS employee FROM employee;",
-    function (error, res) {
-      if (error) throw error;
-      const allEmp = res.map(({ employee }) => ({
-        name: employee,
-      }));
+// function updateEmp() {
+//   connection.query(
+//     "SELECT CONCAT(first_name, ' ', last_name) AS employee FROM employee;",
+//     function (error, res) {
+//       if (error) throw error;
+//       const allEmp = res.map(({ employee }) => ({
+//         name: employee,
+//       }));
 
-      inquirer
-        .prompt({
-          name: "empName",
-          type: "list",
-          message: "Which employee would you like to update?",
-          choices: allEmp,
-        })
-        .then((res) => {
-          console.log(res);
-        });
-    }
-  );
-}
+//       inquirer
+//         .prompt({
+//           name: "empName",
+//           type: "list",
+//           message: "Which employee would you like to update?",
+//           choices: allEmp,
+//         })
+//         .then((answers) => {
+//           eName = answers.empName;
+//           console.log(eName);
+//         });
+//     }
+//   );
+// }
